@@ -1,0 +1,11 @@
+{
+  "name": "module-boilerplate",
+  "version": "0.1.0",
+  "description": "Simple collection of boilerplate and assets for our modules",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Victor Saiz <vectorsize@gmail.com>",
+  "license": "BSD-3"
+}
