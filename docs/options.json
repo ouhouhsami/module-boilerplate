@@ -7,6 +7,6 @@
     "[cdn]/Ircam-RnD/module-boilerplate/master/docs/css/main.css"
   ],
   "js" : [
-    "[cdn]/Ircam-RnD/module-boilerplate/master/docs/js/highlight.min.js"  
+    "//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js"  
   ]
 }
