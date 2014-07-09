@@ -1,0 +1,12 @@
+{
+  "external" : {
+    "css" : 1,
+    "js" : 1
+  },
+  "css" : [
+    "[cdn]/Ircam-RnD/module-boilerplate/master/docs/css/main.css"
+  ],
+  "js" : [
+    "[cdn]/Ircam-RnD/module-boilerplate/master/docs/js/highlight.min.js"  
+  ]
+}
