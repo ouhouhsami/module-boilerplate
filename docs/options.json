@@ -3,6 +3,7 @@
     "css" : 1,
     "js" : 1
   },
+  "cdn" : "https://rawgit.com",
   "css" : [
     "[cdn]/Ircam-RnD/module-boilerplate/master/docs/css/main.css"
   ],
