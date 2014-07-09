@@ -1,13 +1,15 @@
 {
-  "external" : {
-    "css" : 1,
-    "js" : 1
-  },
   "cdn" : "https://rawgit.com",
-  "css" : [
-    "[cdn]/Ircam-RnD/module-boilerplate/master/docs/css/main.css"
-  ],
-  "js" : [
-    "//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js"  
-  ]
+  "css" : {
+    "external" : [
+      {"cdn": true, "url": "/Ircam-RnD/module-boilerplate/master/docs/css/main.css"}
+    ],
+    "internal": []
+  },
+  "js" : {
+  	"external" : [
+      {"url": "//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js"}
+    ],
+    "internal": []
+  }
 }
