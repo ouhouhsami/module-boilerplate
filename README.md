@@ -17,6 +17,8 @@ Add this dependencies in your repo
   "gulp-streamify": "~0.0.5",
   "gulp-verb": "0.2.3",
   "gulp-gh-pages" : "0.3.3",
+  "gulp-download" : "0.0.1",
+  "gulp-conflict" : "0.1.2",
   "gulp-util" : "2.2.19",
   "run-sequence" : "0.3.6"
 }
