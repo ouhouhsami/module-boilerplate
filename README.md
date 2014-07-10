@@ -10,9 +10,8 @@ Add this dependencies in your repo
   "mocha": "~1.17.1",
   "chai": "~1.9.0",
   "blanket": "~1.1.6",
-  "gulp": "~3.6.2",
+  "gulp": "~3.8.2",
   "gulp-uglify": "~0.3",
-  "vinyl-source-stream": "~0.1.1",
   "gulp-connect": "~2.0.5",
   "gulp-streamify": "~0.0.5",
   "gulp-verb": "0.2.3",
@@ -20,6 +19,26 @@ Add this dependencies in your repo
   "gulp-download" : "0.0.1",
   "gulp-conflict" : "0.1.2",
   "gulp-util" : "2.2.19",
-  "run-sequence" : "0.3.6"
+  "gulp-clean": "^0.3.1",
+  "vinyl-source-stream": "~0.1.1",
+  "run-sequence" : "0.3.6",
 }
+```
+
+## .gitignore
+
+```
+/node_modules/*
+/gh-pages/*
+```
+
+## gulpfile.js
+
+```js
+var gulp = require('gulp');
+var packageJson = require('./package.json');
+var gutil = require('gulp-util');
+var loadTasks = require('module-boilerplate');
+
+loadTasks(gulp, packageJson);
 ```
