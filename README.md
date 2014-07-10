@@ -21,7 +21,7 @@ Add this dependencies in your repo
   "gulp-util" : "2.2.19",
   "gulp-clean": "^0.3.1",
   "vinyl-source-stream": "~0.1.1",
-  "run-sequence" : "0.3.6",
+  "run-sequence" : "0.3.6"
 }
 ```
 
