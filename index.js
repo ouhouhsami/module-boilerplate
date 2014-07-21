@@ -4,14 +4,14 @@ module.exports = function(gulp, packageJson) {
   
   //replace for [cdn] dynamic value and check http in url name
   tools.getOptionUrl = function(option, cdn) {
-    if(option.ircamlib)  
+    if(option.ircamlib)
       option.url = "/Ircam-RnD/" + option.url + "/master/" + option.url + ".js";
     if(option.cdn)
       option.url = cdn + option.url;
     if(option.url.substr(0, 2) == '//')
       option.url = 'http:' + option.url;
     return option.url;
-  }
+  };
   
   tools.processOptions = function(options) {
     options.internalCSS = [];
@@ -26,7 +26,7 @@ module.exports = function(gulp, packageJson) {
         options.internalJS.push(tools.getOptionUrl(options.js.internal[i], options.cdn));
     for(var i in options.js.external)
         options.externalJS.push(tools.getOptionUrl(options.js.external[i], options.cdn));
-  }
+  };
   
   tools.boilerplatePath = './node_modules/module-boilerplate/';
   
@@ -53,7 +53,6 @@ module.exports = function(gulp, packageJson) {
   }
   
   var libName = packageJson.exports || packageJson.name;
-  var exports =  packageJson.exports;
   var dependencies = Object.keys(packageJson && packageJson.dependencies || {});
   
   //lib with dependencies
@@ -137,7 +136,7 @@ module.exports = function(gulp, packageJson) {
       } else {
         gutil.log("The file _api.md was created!");
       }
-    }); 
+    });
     
     fs.writeFile("./docs/partials/_demo-ghp.md", "<script></script>", function(err) {
       if(err) {
@@ -145,7 +144,7 @@ module.exports = function(gulp, packageJson) {
       } else {
         gutil.log("The file _demo-ghp.md was created!");
       }
-    }); 
+    });
   });
   
   gulp.task('get-default-tpl', function() {
@@ -178,28 +177,7 @@ module.exports = function(gulp, packageJson) {
       }))
       .pipe(gulp.dest('./'));
   });
-  
-  // Start internal task for create gh-pages
-  gulp.task('verb-gh-pages-snd', function() {
-    return gulp.src('./docs/snd/*')
-      .pipe(gulp.dest('./gh-pages/snd/'));
-  });
-    
-  gulp.task('verb-gh-pages-datas', function() {
-    return gulp.src('./docs/datas/*')
-      .pipe(gulp.dest('./gh-pages/datas/'));
-  });      
-  
-  gulp.task('verb-gh-pages-utils', function() {
-    return gulp.src('./docs/utils/*')
-      .pipe(gulp.dest('./gh-pages/utils/'));
-  });
-  
-  gulp.task('verb-gh-pages-lib', function() {
-    return gulp.src('./build/' + packageJson.name + '.js')
-      .pipe(gulp.dest('./gh-pages/js/'));
-  });
-  
+
   gulp.task('process-options', function() {
     tools.processOptions(options);
     return true;
@@ -246,7 +224,7 @@ module.exports = function(gulp, packageJson) {
       .pipe(gulp.dest('./examples/'));
   });
   
-  gulp.task('launch-server-gh-page', function() {
+  gulp.task('serve-gh-pages', function() {
     gutil.log(gutil.colors.green("Test your gh-pages on 9002 port"));
     connect.server({
       root: ['./gh-pages'],
@@ -255,7 +233,7 @@ module.exports = function(gulp, packageJson) {
     });
   });
   
-  gulp.task('launch-server-demo-path', function() { 
+  gulp.task('serve-examples', function() {
     gutil.log(gutil.colors.green("Test your demo path on 9003 port"));
     return connect.server({
       root: ['./examples'],
@@ -263,12 +241,7 @@ module.exports = function(gulp, packageJson) {
       livereload: false
     });
   });
-  
-  gulp.task('clean-gh-pages', function() {
-    return gulp.src('./gh-pages/', {read: false})
-        .pipe(clean());
-  });
-  
+ 
   gulp.task('clean-after', function() {
     return gulp.src(tools.boilerplatePath + '_tmpdocs/', {read: false})
         .pipe(clean());
@@ -296,16 +269,16 @@ module.exports = function(gulp, packageJson) {
   //delete tmp files
   gulp.task('gh-pages', function(callback) {
     runSequence(
-      'clean-gh-pages', 'get-default-tpl', 'get-default-partials', 'get-repo-tpl', 'get-repo-partials', 
-      'verb-gh-pages-snd','verb-gh-pages-datas', 'verb-gh-pages-utils', 'verb-gh-pages-lib', 
-      'process-options', 'verb-gh-pages-dl-internal-js', 'verb-gh-pages-dl-internal-css', 
-      'verb-gh-pages', 'launch-server-gh-page', 'clean-after',
+      'get-default-tpl', 'get-default-partials', 'get-repo-tpl', 'get-repo-partials',
+      'verb-gh-pages-snd','verb-gh-pages-datas', 'verb-gh-pages-utils', 'verb-gh-pages-lib',
+      'process-options', 'verb-gh-pages-dl-internal-js', 'verb-gh-pages-dl-internal-css',
+      'verb-gh-pages', 'clean-after',
     callback);
   });
   
   //update demo from gh-pages but no clean the example folder before
-  gulp.task('update-demo', function(callback) {
-    runSequence('gh-pages', 'update-demo-path', 'launch-server-demo-path');
+  gulp.task('export-examples', function(callback) {
+    runSequence('gh-pages', 'update-demo-path');
   });
   
   //Deploy github page to the master on gh-pages branch 
