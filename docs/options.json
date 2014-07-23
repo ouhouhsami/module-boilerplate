@@ -1,15 +1,11 @@
 {
   "cdn" : "https://rawgit.com",
   "css" : {
-    "external" : [
-      {"cdn": true, "url": "/Ircam-RnD/module-boilerplate/master/docs/css/main.css"}
-    ],
+    "external" : [],
     "internal": []
   },
   "js" : {
-  	"external" : [
-      {"url": "//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js"}
-    ],
+  	"external" : [],
     "internal": []
   }
 }
