@@ -20,6 +20,7 @@ Add this dependencies in your repo
   "gulp-conflict" : "0.1.2",
   "gulp-util" : "2.2.19",
   "gulp-clean": "^0.3.1",
+  "gulp-exec" : "2.1.0",
   "vinyl-source-stream": "~0.1.1",
   "run-sequence" : "0.3.6"
 }
@@ -41,3 +42,22 @@ var loadTasks = require('module-boilerplate');
 
 loadTasks(gulp, packageJson);
 ```
+
+## options.json
+{
+  "cdn" : "https://rawgit.com",
+  "css" : {
+    "external" : [
+      {"cdn": true, "url": "/Ircam-RnD/module-boilerplate/master/docs/css/main.css"}
+    ],
+    "internal": []
+  },
+  "js" : {
+  	"external" : [
+      {"url": "//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js"},
+      {"cdn": true, "ircamlib" : true, "url": "player"},
+      {"cdn": true, "ircamlib" : true, "url": "buffer-loader"}
+    ],
+    "internal": []
+  }
+}
