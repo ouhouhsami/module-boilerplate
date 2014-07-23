@@ -18,14 +18,22 @@ module.exports = function(gulp, packageJson) {
     options.externalCSS = [];
     options.internalJS = [];
     options.externalJS = [];
-    for(var i in options.css.internal)
+    if(options.css && options.css.internal) {
+      for(var i in options.css.internal)
         options.internalCSS.push(tools.getOptionUrl(options.css.internal[i], options.cdn));
-    for(var i in options.css.external)
+    }
+    if(options.css && options.css.internal) {
+      for(var i in options.css.internal)
         options.externalCSS.push(tools.getOptionUrl(options.css.external[i], options.cdn));
-    for(var i in options.js.internal)
+    }
+    if(options.js && options.js.internal) {
+      for(var i in options.js.internal)
         options.internalJS.push(tools.getOptionUrl(options.js.internal[i], options.cdn));
-    for(var i in options.js.external)
+    }
+    if(options.js && options.js.external) {
+      for(var i in options.js.external)
         options.externalJS.push(tools.getOptionUrl(options.js.external[i], options.cdn));
+    }
   };
   
   tools.boilerplatePath = './node_modules/module-boilerplate/';
@@ -41,15 +49,20 @@ module.exports = function(gulp, packageJson) {
   var download = require("gulp-download");
   var conflict = require("gulp-conflict");
   var clean = require("gulp-clean");
+  //var exec = require('gulp-exec');
   var runSequence = require("run-sequence");
   var fs = require('fs');
   var path = require('path');
+  var exec = require('child_process').exec;
   
   try {
     var options = require('../../docs/options.json');
   }
   catch (e) {
-    gutil.log(gutil.colors.yellow("docs/options.json does not exist execute"), gutil.colors.cyan("gulp init-docs"));
+    var options = {
+        cdn : "https://rawgit.com"
+    }
+    //gutil.log(gutil.colors.yellow("docs/options.json does not exist execute"), gutil.colors.cyan("gulp init-docs"));
   }
   
   var libName = packageJson.exports || packageJson.name;
@@ -107,44 +120,50 @@ module.exports = function(gulp, packageJson) {
   
   //Generation of specific docs files for the repo
   gulp.task('init-docs', function() {
-    
     fs.mkdir("./docs", function(e) {
       if(!e || (e && e.code === 'EEXIST')){
         gutil.log("The folder /docs was created!");
+        fs.mkdir("./docs/partials", function(e) {
+        if(!e || (e && e.code === 'EEXIST')){
+          gutil.log("The folder /docs/partials was created!");
+          fs.writeFile("./docs/partials/_api.md", "#Usage", function(err) {
+            if(err) {
+                gutil.log(err);
+              } else {
+                gutil.log("The file _api.md was created!");
+              }
+            });
+            
+            fs.writeFile("./docs/partials/_demo-ghp.md", "<script></script>", function(err) {
+              if(err) {
+                gutil.log(err);
+              } else {
+                gutil.log("The file _demo-ghp.md was created!");
+              }
+          });
+        } else {
+          gutil.log(e);
+        }
+      });
       } else {
         gutil.log(e);
       }
     });
-    
-    gulp.src(['node_modules/module-boilerplate/docs/options.json'])
-      .pipe(verb({
-        dest: 'options.json',
-      }))
-      .pipe(gulp.dest('./docs'));
-    
-    fs.mkdir("./docs/partials", function(e) {
-      if(!e || (e && e.code === 'EEXIST')){
-        gutil.log("The folder /docs/partials was created!");
-      } else {
-        gutil.log(e);
-      }
-    });
-    
-    fs.writeFile("./docs/partials/_api.md", "#Usage", function(err) {
-      if(err) {
-        gutil.log(err);
-      } else {
-        gutil.log("The file _api.md was created!");
-      }
-    });
-    
-    fs.writeFile("./docs/partials/_demo-ghp.md", "<script></script>", function(err) {
-      if(err) {
-        gutil.log(err);
-      } else {
-        gutil.log("The file _demo-ghp.md was created!");
-      }
-    });
+  });
+  
+  gulp.task('get-docs-options', function() {
+      gulp.src(['node_modules/module-boilerplate/docs/options.json'])
+      .pipe(gulp.dest('./docs/'));
+  });      
+  
+  gulp.task('get-docs-readme', function() {
+      gulp.src(['node_modules/module-boilerplate/docs/README.tmpl.md'])
+      .pipe(gulp.dest('./docs/'));
+  });
+  
+  gulp.task('get-docs-index', function() {
+      gulp.src(['node_modules/module-boilerplate/docs/index.tmpl.html'])
+      .pipe(gulp.dest('./docs/'));
   });
   
   gulp.task('get-default-tpl', function() {
@@ -183,8 +202,19 @@ module.exports = function(gulp, packageJson) {
     return true;
   });
   
+  gulp.task('get-gh-pages', function(){
+    fs.mkdir("./gh-pages", function(e) {
+      if(!e || (e && e.code === 'EEXIST')){
+        gutil.log("The folder ./gh-pages was created!");
+        exec('git clone -b gh-pages https://github.com/Ircam-RnD/' + libName + '.git gh-pages;cd gh-pages;rm -rf .git', function (err, stdout, stderr) {
+          gutil.log(stdout);
+        });
+      }
+    });
+  });
+  
   //Download internal JS files
-  gulp.task('verb-gh-pages-dl-internal-js', function() {
+  gulp.task('gh-pages-dl-internal-js', function() {
     if(options.internalJS.length > 0) {
       return download(options.internalJS)
         .pipe(gulp.dest("./gh-pages/js"));
@@ -194,7 +224,7 @@ module.exports = function(gulp, packageJson) {
   });
   
   //Download internal CSS files
-  gulp.task('verb-gh-pages-dl-internal-css', function() {
+  gulp.task('gh-pages-dl-internal-css', function() {
     if(options.internalCSS.length > 0) {
       return download(options.internalCSS)
         .pipe(gulp.dest("./gh-pages/css"));
@@ -214,12 +244,15 @@ module.exports = function(gulp, packageJson) {
     return gulp.src([tools.boilerplatePath + '_tmpdocs/index.tmpl.html'])
       .pipe(verb({
         options : options,
+        css_default : options.cdn + "/Ircam-RnD/module-boilerplate/master/docs/css/main.css",
+        js_default : "//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js",
+        js_lib : options.cdn + "/Ircam-RnD/" + libName + "/master/build/" + libName + ".js",
         dest: 'index.html'
       }))
       .pipe(gulp.dest('./gh-pages'));
   });
   
-  gulp.task('update-demo-path', function() {
+  gulp.task('get-gh-pages-into-examples-path', function() {
     return gulp.src('./gh-pages/**')
       .pipe(gulp.dest('./examples/'));
   });
@@ -259,26 +292,27 @@ module.exports = function(gulp, packageJson) {
     runSequence('get-default-tpl', 'get-default-partials', 'get-repo-tpl', 'get-repo-partials', 'verb-docs', 'clean-after', callback);
   });
   
+  gulp.task('gh-pages-init', function(callback) {
+    runSequence('repo-clone', 'gh-pages-checkout');
+  });
+  
   //Generation of github pages
-  //delete the path before
   //mix repo content and boilerplate content
-  //get static content like snd, datas and utils
   //procces the css and js dependencies
   //download internal css and js dependencies
   //create index.html and test with the local server
   //delete tmp files
   gulp.task('gh-pages', function(callback) {
     runSequence(
-      'get-default-tpl', 'get-default-partials', 'get-repo-tpl', 'get-repo-partials',
-      'verb-gh-pages-snd','verb-gh-pages-datas', 'verb-gh-pages-utils', 'verb-gh-pages-lib',
-      'process-options', 'verb-gh-pages-dl-internal-js', 'verb-gh-pages-dl-internal-css',
+      'get-gh-pages', 'get-default-tpl', 'get-default-partials', 'get-repo-tpl', 'get-repo-partials',
+      'process-options', 'gh-pages-dl-internal-js', 'gh-pages-dl-internal-css',
       'verb-gh-pages', 'clean-after',
     callback);
   });
   
   //update demo from gh-pages but no clean the example folder before
   gulp.task('export-examples', function(callback) {
-    runSequence('gh-pages', 'update-demo-path');
+    runSequence('gh-pages', 'get-gh-pages-into-examples-path');
   });
   
   //Deploy github page to the master on gh-pages branch 
