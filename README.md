@@ -44,6 +44,8 @@ loadTasks(gulp, packageJson);
 ```
 
 ## options.json
+
+```js
 {
   "cdn" : "https://rawgit.com",
   "css" : {
@@ -61,3 +63,4 @@ loadTasks(gulp, packageJson);
     "internal": []
   }
 }
+```
