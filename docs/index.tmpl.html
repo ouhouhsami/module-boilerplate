@@ -5,19 +5,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{%= name %}</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700|Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    
+    <link rel="stylesheet" href="{%= css_default %}">
     {% _.forEach(options.externalCSS, function(css) { %}
       <link rel="stylesheet" href="{%= css %}">
     {% }); %}
     {% _.forEach(options.internalCSS, function(css) { %}
       <link rel="stylesheet" href="./css/{%= css %}">
     {% }); %}
+    
+    <script src="{%= js_default %}"></script>
+    <script src="{%= js_lib %}"></script>
     {% _.forEach(options.externalJS, function(js) { %}
       <script src="{%= js %}"></script>
     {% }); %}
     {% _.forEach(options.internalJS, function(js) { %}
       <script src="./js/{%= js %}"></script>
     {% }); %}
-    <script src="./js/{%= name %}.js"></script>
+    
   </head>
   <body>
 
