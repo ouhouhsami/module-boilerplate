@@ -1,15 +1,17 @@
 ## Gulp commands
 
 * `gulp` - build the lib in "build" folder
-* `gulp test` - build standalone lib and dependencies and launch server for unit testing
+* `gulp test` - build standalone lib and dependencies and launch server on 9001 port for unit testing
 * `gulp init-docs` - create "docs" and "partials" folder with empty "_api.md", "_demo-ghp.md" files
-* `get-docs-options` - get "options.json" to "docs" folder
-* `get-docs-readme` -  get "README.tmpl.md" to "docs" folder
-* `get-docs-index` - push "index.tmpl.html" to "docs" folder
+* `gulp get-docs-options` - get "options.json" to "docs" folder
+* `gulp get-docs-readme` -  get "README.tmpl.md" to "docs" folder
+* `gulp get-docs-index` - push "index.tmpl.html" to "docs" folder
 * `gulp docs` - create README.md
-* `gulp gh-pages` - create gh pages
+* `gulp gh-pages` - create gh-pages
+* `gulp serve-gh-pages` - test your gh-pages online on 9002 port
 * `gulp deploy-gh-pages` - push gh-pages folder to github
 * `gulp export-examples` - create examples folder with gh-pages demo
+* `gulp serve-examples` - test your examples online on 9003 port
 
 ## Package.json
 
