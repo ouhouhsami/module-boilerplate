@@ -8,7 +8,7 @@
   },
   "author": "Victor Saiz <vectorsize@gmail.com>",
   "license": "BSD-3",
-  "devDependencies": {
+  "dependencies": {
     "gulp-uglify": "~0.3",
     "gulp-connect": "~2.0.5",
     "gulp-streamify": "~0.0.5",
