@@ -5,7 +5,7 @@ module.exports = function(gulp, packageJson) {
   //replace for [cdn] dynamic value and check http in url name
   tools.getOptionUrl = function(option, cdn) {
     if(option.ircamlib)
-      option.url = "/Ircam-RnD/" + option.url + "/master/build/" + option.url + ".js";
+      option.url = "/ircam-rnd/" + option.url + "/master/" + option.url + ".js";
     if(option.cdn)
       option.url = cdn + option.url;
     if(option.url.substr(0, 2) == '//')
@@ -75,7 +75,7 @@ module.exports = function(gulp, packageJson) {
         standalone : libName
       })
       .pipe(source(packageJson.name + '.js'))
-      .pipe(gulp.dest('./build/'));
+      .pipe(gulp.dest('./'));
   });
   
   //Minify lib with dependencies 
@@ -86,7 +86,7 @@ module.exports = function(gulp, packageJson) {
       })
       .pipe(source(packageJson.name + '.min.js'))
       .pipe(streamify(uglify))
-      .pipe(gulp.dest('./build/'));
+      .pipe(gulp.dest('./'));
   });
   
   //Just dependencies without lib
