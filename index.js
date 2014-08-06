@@ -5,7 +5,7 @@ module.exports = function(gulp, packageJson) {
   //replace for [cdn] dynamic value and check http in url name
   tools.getOptionUrl = function(option, cdn) {
     if(option.ircamlib)
-      option.url = "/Ircam-RnD/" + option.url + "/master/" + option.url + ".js";
+      option.url = "/Ircam-RnD/" + option.url + "/master/build/" + option.url + ".js";
     if(option.cdn)
       option.url = cdn + option.url;
     if(option.url.substr(0, 2) == '//')
@@ -192,6 +192,7 @@ module.exports = function(gulp, packageJson) {
   gulp.task('verb-docs', function() {
     return gulp.src([tools.boilerplatePath + '_tmpdocs/README.tmpl.md'])
       .pipe(verb({
+        docsFolder : {docs : tools.boilerplatePath + '_tmpdocs/'},
         dest: 'README.md'
       }))
       .pipe(gulp.dest('./'));
@@ -206,8 +207,12 @@ module.exports = function(gulp, packageJson) {
     fs.mkdir("./gh-pages", function(e) {
       if(!e || (e && e.code === 'EEXIST')){
         gutil.log("The folder ./gh-pages was created!");
-        exec('git clone -b gh-pages https://github.com/Ircam-RnD/' + libName + '.git gh-pages;cd gh-pages;rm -rf .git', function (err, stdout, stderr) {
-          gutil.log(stdout);
+        exec('git clone -b gh-pages https://github.com/Ircam-RnD/' + packageJson.name + '.git gh-pages;cd gh-pages;rm -rf .git', function (err, stdout, stderr) {
+          if(!fs.existsSync("./gh-pages")) {
+            fs.mkdir("./gh-pages", function(e) {
+              gutil.log("No gh-pages branch found. The folder ./gh-pages was re-created!");
+            });
+          }
         });
       }
     });
@@ -246,7 +251,7 @@ module.exports = function(gulp, packageJson) {
         options : options,
         css_default : options.cdn + "/Ircam-RnD/module-boilerplate/master/docs/css/main.css",
         js_default : "//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js",
-        js_lib : options.cdn + "/Ircam-RnD/" + libName + "/master/build/" + libName + ".js",
+        js_lib : options.cdn + "/Ircam-RnD/" + packageJson.name + "/master/build/" + packageJson.name + ".js",
         dest: 'index.html'
       }))
       .pipe(gulp.dest('./gh-pages'));
@@ -303,11 +308,17 @@ module.exports = function(gulp, packageJson) {
   //create index.html and test with the local server
   //delete tmp files
   gulp.task('gh-pages', function(callback) {
-    runSequence(
-      'get-gh-pages', 'get-default-tpl', 'get-default-partials', 'get-repo-tpl', 'get-repo-partials',
-      'process-options', 'gh-pages-dl-internal-js', 'gh-pages-dl-internal-css',
-      'verb-gh-pages', 'clean-after',
-    callback);
+    if(!fs.existsSync("./gh-pages")) {
+        gutil.log(gutil.colors.yellow("gh-pages folder does not exist, we first create the folder and checkout gh-pages from github."), gutil.colors.cyan("You need to re-execute gh-pages for generate pages"));
+        runSequence('get-gh-pages', callback);
+    }
+    else {
+        runSequence(
+          'get-default-tpl', 'get-default-partials', 'get-repo-tpl', 'get-repo-partials',
+          'process-options', 'gh-pages-dl-internal-js', 'gh-pages-dl-internal-css',
+          'verb-gh-pages', 'clean-after',
+        callback);
+    }
   });
   
   //update demo from gh-pages but no clean the example folder before
