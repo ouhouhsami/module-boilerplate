@@ -207,7 +207,7 @@ module.exports = function(gulp, packageJson) {
     fs.mkdir("./gh-pages", function(e) {
       if(!e || (e && e.code === 'EEXIST')){
         gutil.log("The folder ./gh-pages was created!");
-        exec('git clone -b gh-pages https://github.com/Ircam-RnD/' + packageJson.name + '.git gh-pages', function (err, stdout, stderr) {
+        exec('git clone -b gh-pages https://github.com/ircam-rnd/' + packageJson.name + '.git gh-pages', function (err, stdout, stderr) {
           if(!fs.existsSync("./gh-pages")) {
             fs.mkdir("./gh-pages", function(e) {
               gutil.log("No gh-pages branch found. The folder ./gh-pages was re-created!");
@@ -253,9 +253,9 @@ module.exports = function(gulp, packageJson) {
     return gulp.src([tools.boilerplatePath + '_tmpdocs/index.tmpl.html'])
       .pipe(verb({
         options : options,
-        css_default : options.cdn + "/Ircam-RnD/module-boilerplate/master/docs/css/main.css",
+        css_default : options.cdn + "/ircam-rnd/module-boilerplate/master/docs/css/main.css",
         js_default : "//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js",
-        js_lib : options.cdn + "/Ircam-RnD/" + packageJson.name + "/master/build/" + packageJson.name + ".js",
+        js_lib : options.cdn + "/ircam-rnd/" + packageJson.name + "/master/" + packageJson.name + ".js",
         dest: 'index.html'
       }))
       .pipe(gulp.dest('./gh-pages'));
