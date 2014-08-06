@@ -126,7 +126,7 @@ module.exports = function(gulp, packageJson) {
         fs.mkdir("./docs/partials", function(e) {
         if(!e || (e && e.code === 'EEXIST')){
           gutil.log("The folder /docs/partials was created!");
-          fs.writeFile("./docs/partials/_api.md", "#Usage", function(err) {
+          fs.writeFile("./docs/partials/_api.md", "## Usage", function(err) {
             if(err) {
                 gutil.log(err);
               } else {
