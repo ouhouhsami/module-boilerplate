@@ -329,7 +329,7 @@ module.exports = function(gulp, packageJson) {
   //Deploy github page to the master on gh-pages branch 
   gulp.task('deploy-gh-pages', function() {
     gulp.src("./gh-pages/**/*")
-      .pipe(deploy());
+      .pipe(deploy({remoteUrl : packageJson.repository.url}));
   });
 
 };
