@@ -207,10 +207,14 @@ module.exports = function(gulp, packageJson) {
     fs.mkdir("./gh-pages", function(e) {
       if(!e || (e && e.code === 'EEXIST')){
         gutil.log("The folder ./gh-pages was created!");
-        exec('git clone -b gh-pages https://github.com/Ircam-RnD/' + packageJson.name + '.git gh-pages;cd gh-pages;rm -rf .git', function (err, stdout, stderr) {
+        exec('git clone -b gh-pages https://github.com/Ircam-RnD/' + packageJson.name + '.git gh-pages', function (err, stdout, stderr) {
           if(!fs.existsSync("./gh-pages")) {
             fs.mkdir("./gh-pages", function(e) {
               gutil.log("No gh-pages branch found. The folder ./gh-pages was re-created!");
+            });
+          }
+          else {
+            exec('cd gh-pages;rm -rf .git', function (err, stdout, stderr) {
             });
           }
         });
