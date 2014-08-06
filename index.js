@@ -118,32 +118,35 @@ module.exports = function(gulp, packageJson) {
     });
   });
   
+  function copyPartial(name){
+    var origPartials = __dirname + '/docs/partials/';
+    var destPartials = './docs/partials/';
+    fs.createReadStream(origPartials + name)
+      .pipe(fs.createWriteStream( destPartials + name));
+  }
+
   //Generation of specific docs files for the repo
   gulp.task('init-docs', function() {
+
     fs.mkdir("./docs", function(e) {
       if(!e || (e && e.code === 'EEXIST')){
         gutil.log("The folder /docs was created!");
+    
         fs.mkdir("./docs/partials", function(e) {
-        if(!e || (e && e.code === 'EEXIST')){
-          gutil.log("The folder /docs/partials was created!");
-          fs.writeFile("./docs/partials/_api.md", "## Usage", function(err) {
-            if(err) {
-                gutil.log(err);
-              } else {
-                gutil.log("The file _api.md was created!");
-              }
-            });
+    
+          if(!e || (e && e.code === 'EEXIST')){
+            gutil.log("The folder /docs/partials was created!");
             
-            fs.writeFile("./docs/partials/_demo-ghp.md", "<script></script>", function(err) {
-              if(err) {
-                gutil.log(err);
-              } else {
-                gutil.log("The file _demo-ghp.md was created!");
-              }
-          });
+            copyPartial('_head.md');
+            copyPartial('_demo-master.md');
+            copyPartial('_demo-ghp.md');
+            copyPartial('_api.md');
+            copyPartial('_status.md');
+
         } else {
           gutil.log(e);
         }
+
       });
       } else {
         gutil.log(e);
