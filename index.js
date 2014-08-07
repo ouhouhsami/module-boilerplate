@@ -69,7 +69,7 @@ module.exports = function(gulp, packageJson) {
   var libName = packageJson.exports || packageJson.name;
   var dependencies = Object.keys(packageJson && packageJson.dependencies || {});
   
-  gulp.transpile('transpile', function () {
+  gulp.task('transpile', function () {
     return gulp.src('./src/index.js')
       .pipe(es6transpiler())
       .pipe(gulp.dest('./'));
@@ -300,7 +300,8 @@ module.exports = function(gulp, packageJson) {
   });
 
   gulp.task('default', function(callback) {
-    runSequence('transpile', 'standalone', 'uglify', callback);
+    //'transpile', 
+    runSequence('standalone', 'uglify', callback);
   });
 
   gulp.task('watch', function() {
