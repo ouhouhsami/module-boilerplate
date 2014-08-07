@@ -75,6 +75,11 @@ module.exports = function(gulp, packageJson) {
       .pipe(gulp.dest('./'));
   });
   
+  gulp.task('copy-index', function () {
+    return gulp.src('./src/index.js')
+      .pipe(gulp.dest('./'));
+  });
+  
   //lib with dependencies
   gulp.task('standalone', function () {
     return browserify('./index.js')
@@ -301,7 +306,7 @@ module.exports = function(gulp, packageJson) {
 
   gulp.task('default', function(callback) {
     //'transpile', 
-    runSequence('standalone', 'uglify', callback);
+    runSequence('copy-index', 'standalone', 'uglify', callback);
   });
 
   gulp.task('watch', function() {
