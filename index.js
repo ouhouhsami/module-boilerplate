@@ -49,6 +49,7 @@ module.exports = function(gulp, packageJson) {
   var download = require("gulp-download");
   var conflict = require("gulp-conflict");
   var clean = require("gulp-clean");
+  var es6transpiler = require("gulp-es6-transpiler");
   //var exec = require('gulp-exec');
   var runSequence = require("run-sequence");
   var fs = require('fs');
@@ -67,6 +68,12 @@ module.exports = function(gulp, packageJson) {
   
   var libName = packageJson.exports || packageJson.name;
   var dependencies = Object.keys(packageJson && packageJson.dependencies || {});
+  
+  gulp.transpile('transpile', function () {
+    return gulp.src('./src/index.js')
+      .pipe(es6transpiler())
+      .pipe(gulp.dest('./'));
+  });
   
   //lib with dependencies
   gulp.task('standalone', function () {
@@ -292,7 +299,9 @@ module.exports = function(gulp, packageJson) {
         .pipe(clean());
   });
 
-  gulp.task('default', ['standalone', 'uglify']);
+  gulp.task('default', function(callback) {
+    runSequence('transpile', 'standalone', 'uglify', callback);
+  });
 
   gulp.task('watch', function() {
     gulp.watch("./", ['dependencies', 'lib']);

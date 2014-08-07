@@ -19,6 +19,7 @@
     "gulp-util" : "2.2.19",
     "gulp-clean": "^0.3.1",
     "gulp-exec" : "2.1.0",
+    "gulp-es6-transpiler" : "0.2.0",
     "vinyl-source-stream": "~0.1.1",
     "run-sequence" : "0.3.6"
   }
