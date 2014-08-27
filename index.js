@@ -305,8 +305,7 @@ module.exports = function(gulp, packageJson) {
   });
 
   gulp.task('default', function(callback) {
-    //'transpile', 
-    runSequence('copy-index', 'standalone', 'uglify', callback);
+    runSequence('transpile', 'standalone', 'uglify', callback);
   });
 
   gulp.task('watch', function() {
