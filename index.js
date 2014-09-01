@@ -50,7 +50,7 @@ module.exports = function(gulp, packageJson) {
   var conflict = require("gulp-conflict");
   var clean = require("gulp-clean");
   var es6transpiler = require("gulp-es6-transpiler");
-  //var exec = require('gulp-exec');
+  var args   = require('yargs').argv;
   var runSequence = require("run-sequence");
   var fs = require('fs');
   var path = require('path');
@@ -305,7 +305,10 @@ module.exports = function(gulp, packageJson) {
   });
 
   gulp.task('default', function(callback) {
-    runSequence('transpile', 'standalone', 'uglify', callback);
+    if(args.transpile != 'undefined' && args.transpile == 'no')
+      runSequence('copy-index', 'standalone', 'uglify', callback);
+    else
+      runSequence('transpile', 'standalone', 'uglify', callback);
   });
 
   gulp.task('watch', function() {

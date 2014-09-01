@@ -1,6 +1,7 @@
 ## Gulp commands
 
 * `gulp` - build the lib in "build" folder
+* `gulp --transpile=no` - build the lib in "build" folder without transpiling
 * `gulp test` - build standalone lib and dependencies and launch server on 9001 port for unit testing
 * `gulp init-docs` - create "docs" and "partials" folder with empty "_api.md", "_demo-ghp.md" files
 * `gulp get-docs-options` - get "options.json" to "docs" folder
