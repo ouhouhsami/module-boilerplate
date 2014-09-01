@@ -9,6 +9,11 @@
   "author": "Victor Saiz <vectorsize@gmail.com>",
   "license": "BSD-3",
   "dependencies": {
+    "fs-utils" : "0.4.3",
+    "browserify": "~4.1.2",
+    "mocha": "~1.17.1",
+    "chai": "~1.9.0",
+    "blanket": "~1.1.6",
     "gulp-uglify": "~0.3",
     "gulp-connect": "~2.0.5",
     "gulp-streamify": "~0.0.5",
