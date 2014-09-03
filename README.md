@@ -8,6 +8,7 @@
 * `gulp get-docs-readme` -  get "README.tmpl.md" to "docs" folder
 * `gulp get-docs-index` - push "index.tmpl.html" to "docs" folder
 * `gulp docs` - create README.md
+* `gulp get-api-docs` - generate "docs/api.md" with parsing "src/index.js" with forked markdox version
 * `gulp gh-pages` - create gh-pages
 * `gulp serve-gh-pages` - test your gh-pages online on 9002 port
 * `gulp deploy-gh-pages` - push gh-pages folder to github

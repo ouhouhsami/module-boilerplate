@@ -55,6 +55,7 @@ module.exports = function(gulp, packageJson) {
   var fs = require('fs');
   var path = require('path');
   var exec = require('child_process').exec;
+  var markdox = require('markdox');
   
   try {
     var options = require('../../docs/options.json');
@@ -319,6 +320,30 @@ module.exports = function(gulp, packageJson) {
 
   gulp.task('docs', function(callback) {
     runSequence('get-default-tpl', 'get-default-partials', 'get-repo-tpl', 'get-repo-partials', 'verb-docs', 'clean-after', callback);
+  });
+  
+  //generation of api.md
+  gulp.task('get-api-doc', function() {
+    fs.readdir( process.argv[2], function (err, files) { 
+      if (!err) {
+        var ommitprivate = args.ommitprivate || true;
+        markdox.process('./src/index.js', {'ommitprivate' : true}, function(err, output){
+          fs.writeFileSync("./docs/api.md", output, "UTF-8");
+        });
+      }
+      else {
+        gutil.log(gutil.colors.yellow("run gulp init-docs first"));
+      }
+    });
+    
+  });
+
+  //Just for debug
+  gulp.task('get-api-doc-json', function() {
+    var dox = require('./node_modules/markdox/node_modules/dox/index');
+    var code = fs.readFileSync('./src/index.js', "utf8");
+    var obj = dox.parseComments(code, { raw: true });
+    process.stdout.write(JSON.stringify(obj, null, 2));
   });
   
   gulp.task('gh-pages-init', function(callback) {
