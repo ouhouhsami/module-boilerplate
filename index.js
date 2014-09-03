@@ -323,11 +323,12 @@ module.exports = function(gulp, packageJson) {
   });
   
   //generation of api.md
-  gulp.task('get-api-doc', function() {
-    fs.readdir( process.argv[2], function (err, files) { 
+  gulp.task('get-api-docs', function() {
+    fs.readdir('./docs', function (err, files) { 
       if (!err) {
         var ommitprivate = args.ommitprivate || true;
-        markdox.process('./src/index.js', {'ommitprivate' : true}, function(err, output){
+        if(ommitprivate == 'no') ommitprivate = false;
+        markdox.process('./src/index.js', {'ommitprivate' : ommitprivate}, function(err, output){
           fs.writeFileSync("./docs/api.md", output, "UTF-8");
         });
       }
