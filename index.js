@@ -70,33 +70,23 @@ module.exports = function(gulp, packageJson) {
   var libName = packageJson.exports || packageJson.name;
   var dependencies = Object.keys(packageJson && packageJson.dependencies || {});
   
-  gulp.task('transpile', function () {
-    return gulp.src('./src/index.js')
-      .pipe(es6transpiler())
-      .pipe(gulp.dest('./'));
-  });
-  
-  gulp.task('copy-index', function () {
-    return gulp.src('./src/index.js')
-      .pipe(gulp.dest('./'));
-  });
-  
-  //lib with dependencies
-  gulp.task('standalone', function () {
-    return browserify('./index.js')
-      .bundle({
-        standalone : libName
-      })
-      .pipe(source(packageJson.name + '.js'))
-      .pipe(gulp.dest('./'));
-  });
-  
   //Minify lib with dependencies 
-  gulp.task('uglify', function() {
-    return browserify('./index.js')
+  gulp.task('just-uglify', function() {
+    return browserify('./' + packageJson.name + '.es5.js')
       .bundle({
         standalone : libName
       })
+      .pipe(source(packageJson.name + '.min.js'))
+      .pipe(streamify(uglify))
+      .pipe(gulp.dest('./'));
+  });
+  
+  gulp.task('transpile-uglify', function() {
+    return browserify('./' + packageJson.name + '.es6.js')
+      .bundle({
+        standalone : libName
+      })
+      .pipe(es6transpiler())
       .pipe(source(packageJson.name + '.min.js'))
       .pipe(streamify(uglify))
       .pipe(gulp.dest('./'));
@@ -306,10 +296,13 @@ module.exports = function(gulp, packageJson) {
   });
 
   gulp.task('default', function(callback) {
-    if(args.transpile != 'undefined' && args.transpile == 'no')
-      runSequence('copy-index', 'standalone', 'uglify', callback);
-    else
-      runSequence('transpile', 'standalone', 'uglify', callback);
+    fs.exists('./' + packageJson.name + '.es6.js', function(exists) {
+      if (exists) {
+        runSequence('transpile-uglify', callback);
+      } else {
+        runSequence('just-uglify', callback);
+      }
+    });
   });
 
   gulp.task('watch', function() {
