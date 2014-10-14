@@ -40,6 +40,7 @@ module.exports = function(gulp, packageJson) {
   
   var browserify = require('browserify');
   var uglify = require('gulp-uglify');
+  var rename = require('gulp-rename');
   var streamify = require('gulp-streamify');
   var connect = require('gulp-connect');
   var source = require('vinyl-source-stream');
@@ -70,8 +71,15 @@ module.exports = function(gulp, packageJson) {
   var libName = packageJson.exports || packageJson.name;
   var dependencies = Object.keys(packageJson && packageJson.dependencies || {});
   
+  gulp.task('transpile', function () {
+    return gulp.src('./' + packageJson.name + '.es6.js')
+      .pipe(es6transpiler())
+      .pipe(rename(packageJson.name + '.es5.js'))
+      .pipe(gulp.dest('./'));
+  });
+  
   //Minify lib with dependencies 
-  gulp.task('just-uglify', function() {
+  gulp.task('uglify', function() {
     return browserify('./' + packageJson.name + '.es5.js')
       .bundle({
         standalone : libName
@@ -81,15 +89,10 @@ module.exports = function(gulp, packageJson) {
       .pipe(gulp.dest('./'));
   });
   
-  gulp.task('transpile-uglify', function() {
-    return browserify('./' + packageJson.name + '.es6.js')
-      .bundle({
-        standalone : libName
-      })
-      .pipe(es6transpiler())
-      .pipe(source(packageJson.name + '.min.js'))
-      .pipe(streamify(uglify))
-      .pipe(gulp.dest('./'));
+  //delete es5 temporary version when we user es6
+  gulp.task('delete-es5', function () {
+    return gulp.src('./' + packageJson.name + '.es5.js', {read: false})
+        .pipe(clean());
   });
   
   //Just dependencies without lib
@@ -298,9 +301,11 @@ module.exports = function(gulp, packageJson) {
   gulp.task('default', function(callback) {
     fs.exists('./' + packageJson.name + '.es6.js', function(exists) {
       if (exists) {
-        runSequence('transpile-uglify', callback);
+        gutil.log(gutil.colors.cyan("es6 version detected"));
+        runSequence('transpile', 'uglify', 'delete-es5', callback);
       } else {
-        runSequence('just-uglify', callback);
+        gutil.log(gutil.colors.cyan("es5 version"));
+        runSequence('uglify', callback);
       }
     });
   });
