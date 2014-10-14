@@ -74,13 +74,13 @@ module.exports = function(gulp, packageJson) {
   gulp.task('transpile', function () {
     return gulp.src('./' + packageJson.name + '.es6.js')
       .pipe(es6transpiler())
-      .pipe(rename(packageJson.name + '.es5.js'))
+      .pipe(rename(packageJson.name + '.js'))
       .pipe(gulp.dest('./'));
   });
   
   //Minify lib with dependencies 
   gulp.task('uglify', function() {
-    return browserify('./' + packageJson.name + '.es5.js')
+    return browserify('./' + packageJson.name + '.js')
       .bundle({
         standalone : libName
       })
@@ -91,7 +91,7 @@ module.exports = function(gulp, packageJson) {
   
   //delete es5 temporary version when we user es6
   gulp.task('delete-es5', function () {
-    return gulp.src('./' + packageJson.name + '.es5.js', {read: false})
+    return gulp.src('./' + packageJson.name + '.js', {read: false})
         .pipe(clean());
   });
   
