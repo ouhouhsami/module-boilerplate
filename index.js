@@ -326,7 +326,12 @@ module.exports = function(gulp, packageJson) {
       if (!err) {
         var ommitprivate = args.ommitprivate || true;
         if(ommitprivate == 'no') ommitprivate = false;
-        markdox.process('./src/index.js', {'ommitprivate' : ommitprivate}, function(err, output){
+        
+        var file = './' + packageJson.name + '.js';
+        if (fs.existsSync('./' + packageJson.name + '.es6.js'))
+          file = './' + packageJson.name + '.es6.js';
+        
+        markdox.process(file, {'ommitprivate' : ommitprivate}, function(err, output){
           fs.writeFileSync("./docs/api.md", output, "UTF-8");
         });
       }
@@ -340,7 +345,12 @@ module.exports = function(gulp, packageJson) {
   //Just for debug
   gulp.task('get-api-doc-json', function() {
     var dox = require('./node_modules/markdox/node_modules/dox/index');
-    var code = fs.readFileSync('./src/index.js', "utf8");
+    
+    var file = './' + packageJson.name + '.js';
+    if (fs.existsSync('./' + packageJson.name + '.es6.js'))
+      file = './' + packageJson.name + '.es6.js';
+          
+    var code = fs.readFileSync(file, "utf8");
     var obj = dox.parseComments(code, { raw: true });
     process.stdout.write(JSON.stringify(obj, null, 2));
   });
