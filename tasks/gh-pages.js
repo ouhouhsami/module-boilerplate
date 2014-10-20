@@ -34,9 +34,7 @@ module.exports = function(gulp, packageJson) {
         options.externalJS.push(tools.getOptionUrl(options.js.external[i], options.cdn));
     }
   };
-  
-  tools.boilerplatePath = './node_modules/module-boilerplate/';
-  
+
   try {
     var options = require('../../docs/options.json');
   }
@@ -47,12 +45,7 @@ module.exports = function(gulp, packageJson) {
     //gutil.log(gutil.colors.yellow("docs/options.json does not exist execute"), gutil.colors.cyan("gulp init-docs"));
   }
   
-  function copyPartial(name){
-    var origPartials = __dirname + '/docs/partials/';
-    var destPartials = './docs/partials/';
-    fs.createReadStream(origPartials + name)
-      .pipe(fs.createWriteStream( destPartials + name));
-  }
+  
 
   gulp.task('get-docs-options', function() {
       gulp.src(['node_modules/module-boilerplate/docs/options.json'])
@@ -116,7 +109,7 @@ module.exports = function(gulp, packageJson) {
     
     gutil.log(options.internalCSS);
     
-    return gulp.src([tools.boilerplatePath + '_tmpdocs/index.tmpl.html'])
+    return gulp.src([boilerplatePath + '_tmpdocs/index.tmpl.html'])
       .pipe(verb({
         options : options,
         css_default : options.cdn + "/ircam-rnd/module-boilerplate/master/docs/css/main.css",

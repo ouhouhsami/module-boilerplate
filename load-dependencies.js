@@ -22,4 +22,6 @@ module.exports = function(packageJson) {
   
   libName = packageJson.exports || packageJson.name;
   
+  boilerplatePath = './node_modules/module-boilerplate/';
+  
 }

@@ -1,5 +1,12 @@
 module.exports = function(gulp, packageJson) {
   
+  function copyPartial(name){
+    var origPartials = boilerplatePath + '/docs/partials/';
+    var destPartials = './docs/partials/';
+    fs.createReadStream(origPartials + name)
+      .pipe(fs.createWriteStream( destPartials + name));
+  }
+  
   //Generation of specific docs files for the repo
   gulp.task('init-docs', function() {
 
@@ -30,29 +37,29 @@ module.exports = function(gulp, packageJson) {
   });
   
   gulp.task('get-default-tpl', function() {
-    return gulp.src([tools.boilerplatePath + 'docs/README.tmpl.md', tools.boilerplatePath + 'docs/index.tmpl.html'])
-      .pipe(gulp.dest(tools.boilerplatePath + '_tmpdocs/'));
+    return gulp.src([boilerplatePath + 'docs/README.tmpl.md', boilerplatePath + 'docs/index.tmpl.html'])
+      .pipe(gulp.dest(boilerplatePath + '_tmpdocs/'));
   });
   
   gulp.task('get-default-partials', function() {
-      return gulp.src(tools.boilerplatePath + 'docs/partials/*')
-      .pipe(gulp.dest(tools.boilerplatePath + '_tmpdocs/partials/'));
+      return gulp.src(boilerplatePath + 'docs/partials/*')
+      .pipe(gulp.dest(boilerplatePath + '_tmpdocs/partials/'));
   });
   
   gulp.task('get-repo-tpl', function() {
     return gulp.src(['./docs/README.tmpl.md', './docs/index.tmpl.html'])
-      .pipe(conflict(tools.boilerplatePath + '_tmpdocs/', {cwd : tools.boilerplatePath + 'todel'}))
-      .pipe(gulp.dest(tools.boilerplatePath + '_tmpdocs/'));
+      .pipe(conflict(boilerplatePath + '_tmpdocs/', {cwd : boilerplatePath + 'todel'}))
+      .pipe(gulp.dest(boilerplatePath + '_tmpdocs/'));
   });
   
   gulp.task('get-repo-partials', function() {
     return gulp.src('./docs/partials/*')
-      .pipe(conflict(tools.boilerplatePath + '_tmpdocs/partials/', {cwd : tools.boilerplatePath + 'todel'}))
-      .pipe(gulp.dest(tools.boilerplatePath + '_tmpdocs/partials/'));
+      .pipe(conflict(boilerplatePath + '_tmpdocs/partials/', {cwd : boilerplatePath + 'todel'}))
+      .pipe(gulp.dest(boilerplatePath + '_tmpdocs/partials/'));
   });
   
   gulp.task('clean-after', function() {
-    return gulp.src(tools.boilerplatePath + '_tmpdocs/', {read: false})
+    return gulp.src(boilerplatePath + '_tmpdocs/', {read: false})
         .pipe(clean());
   });
   

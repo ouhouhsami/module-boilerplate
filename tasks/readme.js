@@ -7,9 +7,9 @@ module.exports = function(gulp, packageJson) {
   
   //Generation of README.md
   gulp.task('verb-docs', function() {
-    return gulp.src([tools.boilerplatePath + '_tmpdocs/README.tmpl.md'])
+    return gulp.src([boilerplatePath + '_tmpdocs/README.tmpl.md'])
       .pipe(verb({
-        docsFolder : {docs : tools.boilerplatePath + '_tmpdocs/'},
+        docsFolder : {docs : boilerplatePath + '_tmpdocs/'},
         dest: 'README.md'
       }))
       .pipe(gulp.dest('./'));

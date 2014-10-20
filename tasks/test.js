@@ -31,6 +31,6 @@ module.exports = function(gulp, packageJson) {
     });
   });
   
-  gulp.task('test', ['dependencies', 'lib', 'connectDev' , 'watch']);
+  gulp.task('test', ['dependencies', 'lib', 'connectDev']);
   
 };
