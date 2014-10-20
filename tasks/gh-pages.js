@@ -4,7 +4,7 @@ module.exports = function(gulp, packageJson) {
   //replace for [cdn] dynamic value and check http in url name
   tools.getOptionUrl = function(option, cdn) {
     if(option.ircamlib)
-      option.url = "/ircam-rnd/" + option.url + "/master/" + option.url + ".js";
+      option.url = "/ircam-rnd/" + option.url + "/master/" + option.url + ".min.js";
     if(option.cdn)
       option.url = cdn + option.url;
     if(option.url.substr(0, 2) == '//')
@@ -36,15 +36,14 @@ module.exports = function(gulp, packageJson) {
   };
 
   try {
-    var options = require('../../docs/options.json');
+    var options = require('../../../docs/options.json');
   }
   catch (e) {
     var options = {
-        cdn : "https://rawgit.com"
+        cdn : "http://raw.ircam.fr"
     }
     //gutil.log(gutil.colors.yellow("docs/options.json does not exist execute"), gutil.colors.cyan("gulp init-docs"));
   }
-  
   
 
   gulp.task('get-docs-options', function() {
@@ -114,7 +113,7 @@ module.exports = function(gulp, packageJson) {
         options : options,
         css_default : options.cdn + "/ircam-rnd/module-boilerplate/master/docs/css/main.css",
         js_default : "//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js",
-        js_lib : options.cdn + "/ircam-rnd/" + packageJson.name + "/master/" + packageJson.name + ".js",
+        js_lib : options.cdn + "/ircam-rnd/" + packageJson.name + "/master/" + packageJson.name + ".min.js",
         dest: 'index.html'
       }))
       .pipe(gulp.dest('./gh-pages'));
