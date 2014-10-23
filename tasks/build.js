@@ -28,7 +28,7 @@ module.exports = function(gulp, packageJson) {
     fs.exists('./' + packageJson.name + '.es6.js', function(exists) {
       if (exists) {
         gutil.log(gutil.colors.cyan("es6 version detected"));
-        runSequence('transpile', 'uglify', 'delete-es5', callback);
+        runSequence('transpile', 'uglify', callback);
       } else {
         gutil.log(gutil.colors.cyan("es5 version"));
         runSequence('uglify', callback);

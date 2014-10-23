@@ -35,8 +35,10 @@ module.exports = function(gulp, packageJson) {
     }
   };
 
+console.log(__dirname);
   try {
-    var options = require('../../../docs/options.json');
+    var options = require('../../' + packageJson.name + '/docs/options.json');
+  console.log(options);
   }
   catch (e) {
     var options = {
