@@ -1,4 +1,4 @@
-module.exports = function(packageJson) {
+module.exports = function(gulp, packageJson) {
     
   browserify = require('browserify');
   uglify = require('gulp-uglify');
@@ -14,12 +14,11 @@ module.exports = function(packageJson) {
   clean = require("gulp-clean");
   es6transpiler = require("gulp-es6-transpiler");
   args   = require('yargs').argv;
-  runSequence = require("run-sequence");
+  runSequence = require("run-sequence").use(gulp);
   fs = require('fs');
   path = require('path');
   exec = require('child_process').exec;
   markdox = require('markdox');
-  
   libName = packageJson.exports || packageJson.name;
   
   boilerplatePath = './node_modules/module-boilerplate/';
