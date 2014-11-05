@@ -39,7 +39,7 @@ Add this dependencies in your repo
 var gulp = require('gulp');
 var packageJson = require('./package.json');
 
-require('./node_modules/module-boilerplate/load-dependencies')(packageJson);
+require('./node_modules/module-boilerplate/load-dependencies')(gulp, packageJson);
 
 tasks = require('./node_modules/module-boilerplate/tasks.json');
 
