@@ -1,5 +1,5 @@
-module.exports = function(gulp, packageJson) {
-  
+module.exports = function(packageJson) {
+    
   browserify = require('browserify');
   uglify = require('gulp-uglify');
   rename = require('gulp-rename');
@@ -14,7 +14,7 @@ module.exports = function(gulp, packageJson) {
   clean = require("gulp-clean");
   es6transpiler = require("gulp-es6-transpiler");
   args   = require('yargs').argv;
-  runSequence = require('run-sequence').use(gulp);
+  runSequence = require("run-sequence");
   fs = require('fs');
   path = require('path');
   exec = require('child_process').exec;
